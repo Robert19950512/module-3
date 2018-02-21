@@ -9,20 +9,18 @@
 	}
 	require 'database.php';
 	
-	if(isset($_POST['story_title']) && isset($_POST['story_link']) && isset($_POST['story_content'])){
-		$story_id = $_POST['story_id'];
-		$user_id = $_SESSION['user_id'];
-		$title=$_POST['story_title'];
-		$link=$_POST['story_link'];
-		$content= $_POST['story_content'];
+	if(isset($_POST['comment_id']) && isset($_POST['comment_content'])){
+
+		$comment_id = $_POST['comment_id'];
+		$content= $_POST['comment_content'];
 	
-		$stmt = $mysqli->prepare("update stories set title=?, link=?, content=? where story_id =?");
+		$stmt = $mysqli->prepare("update comments set comments=?  where comment_id =?");
 			if(!$stmt){
 	                printf("Query Prep Failed: %s\n", $mysqli->error);
 	                exit;
 	        }
 	    
-	    $stmt->bind_param('sssi', $title, $link, $content, $story_id);
+	    $stmt->bind_param('si', $content, $comment_id);
 	 
 		$stmt->execute();
 	 
@@ -32,5 +30,7 @@
 		//$content1=$content;
 		header('Location: Story.php');
 		exit;
+	}else{
+		echo"not into the loop";
 	}
 ?>

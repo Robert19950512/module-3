@@ -10,6 +10,7 @@
 	<h2>Edit Story</h2>
 <?php
 	session_start();
+	require 'database.php';
 	if(isset($_POST['story_id']) && isset($_POST['token'])){
 	$story_id = $_POST['story_id'];
 	$user_id = $_SESSION['user_id'];
@@ -18,15 +19,15 @@
 	{
 		die("Request forgery detected");
 	}
-	require 'database.php';
 	
-	$stmt = $mysqli->prepare("select title, link, content from stories where story_id=?");
+	
+	$stmt = $mysqli->prepare("select title, link, content from stories where story_id = ?");
 		if(!$stmt){
                 printf("Query Prep Failed: %s\n", $mysqli->error);
                 exit;
         }
 	
-	$stmt->bind_param('i', $story_i);
+	$stmt->bind_param('i', $story_id);
     
     $stmt->execute();
     
@@ -50,7 +51,7 @@
 		<br/><br/>
 		Link: <?php echo '<input type ="text" name = "story_link" value =" '. htmlspecialchars($link1) . '" >'; ?>
 		<br/><br/>
-		Content: <?php echo '<input type ="text" name = "story_content value =" '. htmlspecialchars($content1) . '" >'; ?>
+		Content: <?php echo '<textarea name="story_content" rows="5" cols="40" value =" '. htmlspecialchars($content1) . '" ></textarea>'; ?>
 		<br/><br/>
 		<input type = "submit" value = "Edit">
 	</form>
