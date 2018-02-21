@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="UTF-8"> 
 		<title>Eastern News Add Comments</title>
+		<link rel="stylesheet" type="text/css" href="FSS_css.css">
 	</head>
 	<body>
 

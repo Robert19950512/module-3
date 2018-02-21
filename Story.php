@@ -21,6 +21,9 @@
 	
 	if(isset($_POST['sort_by'])){
 		$sort_by = $_POST['sort_by'];
+	}else{
+		$sort_by = "none";
+	}
 	//else{
 	//	$sort_by ="hot";
 	//}
@@ -28,10 +31,10 @@
 	
 		if($sort_by == "hot" && isset($sort_by)){
 		$stmt = $mysqli->prepare("select story_id, author_name, title from stories order by comment_num");
-		} else if ($sort_by == "user" && isset($sort_by)) {
-			$stmt = $mysqli->prepare("select story_id, author_name, title from stories order by author_name ");
+		} else if ($sort_by == "title" && isset($sort_by)) {
+			$stmt = $mysqli->prepare("select story_id, author_name, title from stories order by title");
 		}else{
-			$stmt = $mysqli->prepare("select * from table stories");
+			$stmt = $mysqli->prepare("select story_id, author_name, title from stories");
 
 		}
 
@@ -45,16 +48,17 @@
 		$stmt->bind_result($story_id, $author_name, $title);
 		//echo "$story_id";
 		echo "<table>";
+		echo '<tr>';
+		echo '<th> Story ID </th> <th> Author </th> <th> Title </th>';
+		echo '</tr>';
 	
 		while($stmt->fetch()){
-				echo '<tr>';
-
 			//echo '<td><a href="'.htmlentities($link).'" target="_blank"> '.htmlentities($title).'</a></td>';
 
 			//echo '<td><a href="'.htmlentities($link).'"> '.htmlentities($title).'</a></td>';
 
-		//	echo '<td>'.htmlentities($submitter).'</td>';
-		//	echo '<td>'.$time.'</td>';
+			//echo '<td>'.htmlentities($submitter).'</td>';
+			//echo '<td>'.$time.'</td>';
 				printf("<td>%s </td> <td>%s </td><td>%s</td>",
 					htmlspecialchars($story_id),
 					htmlspecialchars($author_name),
@@ -91,7 +95,6 @@
 			 
 			$stmt->close();
 	
-	}
 	?>
 	
 	<form action='NewStory.php' method = "post">
@@ -103,8 +106,9 @@
 	<form action = 'Story.php' method = "post">
 	<label>Sort Stories By: </label>
 	<select name="sort_by">
+	<option value="none"></option>
 	<option value="hot">hot</option>
-	<option value="user">user</option>
+	<option value="title">title</option>
 	</select>
 	<input type ="submit" value ="click to see the story list by your order choice!"> <br>
 	</form>
